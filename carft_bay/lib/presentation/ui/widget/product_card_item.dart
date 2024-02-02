@@ -1,44 +1,44 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:carft_bay/data/models/product_model.dart';
 import 'package:carft_bay/presentation/ui/screen/product_details_screen.dart';
 import 'package:carft_bay/presentation/ui/utilty/app_colors.dart';
 import 'package:flutter/material.dart';
-
-import 'package:carft_bay/data/models/product_model.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ProductCardItem extends StatelessWidget {
   const ProductCardItem({
-    Key? key,
+    super.key,
     required this.product,
-  }) : super(key: key);
+  });
+
   final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(() => const ProductDetailsScreen());
+        Get.to(() => ProductDetailsScreen(
+              productId: product.id!,
+            ));
       },
+      borderRadius: BorderRadius.circular(16),
       child: SizedBox(
-        height: 190.h,
-        width: 160.w,
+        height: 190,
+        width: 160,
         child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16.r),
-                  topRight: Radius.circular(16.r),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
                 ),
                 child: Image.network(
                   product.image ?? '',
-                  width: 160.w,
-                  height: 120.h,
+                  width: 160,
+                  height: 120,
                   fit: BoxFit.scaleDown,
                 ),
               ),
@@ -50,54 +50,53 @@ class ProductCardItem extends StatelessWidget {
                     Text(
                       product.title ?? '',
                       maxLines: 1,
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black54,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black54,
+                          overflow: TextOverflow.ellipsis),
                     ),
                     Row(
                       children: [
                         Text(
-                          '\$${product.price ?? 0}',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          '৳${product.price ?? 0}',
+                          style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.primaryColor,
+                              fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
-                          width: 8.w,
+                        const SizedBox(
+                          width: 8,
                         ),
                         Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.star,
-                              size: 14.sp,
+                              size: 14,
                               color: Colors.amber,
                             ),
                             Text(
                               '${product.star ?? 0}',
-                              style: TextStyle(
-                                  fontSize: 12.sp,
+                              style: const TextStyle(
+                                  fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.black45),
-                            )
+                            ),
                           ],
                         ),
-                        SizedBox(
-                          width: 8.w,
+                        const SizedBox(
+                          width: 8,
                         ),
                         Card(
                           color: AppColors.primaryColor,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4.r)),
-                          child: Padding(
-                            padding: EdgeInsets.all(2.0.sp),
+                              borderRadius: BorderRadius.circular(4)),
+                          child: const Padding(
+                            padding: EdgeInsets.all(2.0),
                             child: Icon(
                               Icons.favorite_outline_rounded,
-                              size: 10.sp,
+                              size: 10,
                               color: Colors.white,
                             ),
                           ),
@@ -106,7 +105,7 @@ class ProductCardItem extends StatelessWidget {
                     )
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

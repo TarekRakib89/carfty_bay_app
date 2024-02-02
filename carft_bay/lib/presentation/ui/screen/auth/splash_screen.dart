@@ -1,4 +1,5 @@
-import 'package:carft_bay/presentation/ui/screen/auth/verify_email_screen.dart';
+import 'package:carft_bay/presentation/state_holders/auth_controller.dart';
+import 'package:carft_bay/presentation/ui/screen/main_bottom_nav_screen.dart';
 import 'package:carft_bay/presentation/ui/widget/app_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,9 +20,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void moveToNextScreen() async {
     await Future.delayed(
-      const Duration(seconds: 2),
+      const Duration(seconds: 1),
     );
-    Get.offAll(const VerifyEmailScreen());
+    await Get.find<AuthController>().initialize();
+    Get.offAll(const MainBottomNavScreen());
   }
 
   @override
@@ -33,8 +35,11 @@ class _SplashScreenState extends State<SplashScreen> {
             Spacer(),
             AppLogo(),
             Spacer(),
-            // CircularProgressIndicator(),
-            Text('Version 1.0.0'),
+            CircularProgressIndicator(),
+            SizedBox(
+              height: 16,
+            ),
+            Text('Version 1.0'),
             SizedBox(
               height: 16,
             ),

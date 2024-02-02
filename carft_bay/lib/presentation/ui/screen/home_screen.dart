@@ -1,8 +1,12 @@
 import 'package:carft_bay/data/models/product_model.dart';
+import 'package:carft_bay/presentation/state_holders/auth_controller.dart';
 import 'package:carft_bay/presentation/state_holders/category_controller.dart';
 import 'package:carft_bay/presentation/state_holders/home_banner_controller.dart';
 import 'package:carft_bay/presentation/state_holders/main_bottom_controller.dart';
+import 'package:carft_bay/presentation/state_holders/new_product_controller.dart';
 import 'package:carft_bay/presentation/state_holders/popular_product_controller.dart';
+import 'package:carft_bay/presentation/state_holders/spacial_product_controller.dart';
+import 'package:carft_bay/presentation/ui/screen/auth/verify_email_screen.dart';
 import 'package:carft_bay/presentation/ui/screen/product_list_screen.dart';
 import 'package:carft_bay/presentation/ui/utilty/assets_path.dart';
 import 'package:carft_bay/presentation/ui/widget/category_item.dart';
@@ -12,7 +16,6 @@ import 'package:carft_bay/presentation/ui/widget/home/circle_icon_button.dart';
 import 'package:carft_bay/presentation/ui/widget/home/section_title.dart';
 import 'package:carft_bay/presentation/ui/widget/product_card_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,28 +32,32 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: appBar,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              SizedBox(height: 8.h),
+              const SizedBox(
+                height: 8,
+              ),
               searchTextField,
-              SizedBox(height: 16.h),
+              const SizedBox(
+                height: 16,
+              ),
               SizedBox(
-                height: 150.h,
+                height: 210,
                 child: GetBuilder<HomeBannerController>(
                     builder: (homeBannerController) {
                   return Visibility(
-                      visible: homeBannerController.inProgress == false,
-                      replacement: const CenterCircularProgressIndicator(),
-                      child: BannerCarousel(
-                        bannerList:
-                            homeBannerController.bannerListModel.bannerList ??
-                                [],
-                      ));
+                    visible: homeBannerController.inProgress == false,
+                    replacement: const CenterCircularProgressIndicator(),
+                    child: BannerCarousel(
+                      bannerList:
+                          homeBannerController.bannerListModel.bannerList ?? [],
+                    ),
+                  );
                 }),
               ),
-              SizedBox(
-                height: 15.h,
+              const SizedBox(
+                height: 16,
               ),
               SectionTitle(
                 title: 'All Categories',
@@ -66,15 +73,47 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               GetBuilder<PopularProductController>(
-                  builder: (popularPorductController) {
+                  builder: (popularProductController) {
                 return Visibility(
-                  visible: popularPorductController.inProgress == false,
+                  visible: popularProductController.inProgress == false,
                   replacement: const CenterCircularProgressIndicator(),
                   child: productList(
-                      popularPorductController.productListModel.productList ??
+                      popularProductController.productListModel.productList ??
                           []),
                 );
-              })
+              }),
+              const SizedBox(
+                height: 8,
+              ),
+              SectionTitle(
+                title: 'Special',
+                onTapSeeAll: () {},
+              ),
+              GetBuilder<SpecialProductController>(
+                  builder: (specialProductController) {
+                return Visibility(
+                  visible: specialProductController.inProgress == false,
+                  replacement: const CenterCircularProgressIndicator(),
+                  child: productList(
+                      specialProductController.productListModel.productList ??
+                          []),
+                );
+              }),
+              const SizedBox(
+                height: 8,
+              ),
+              SectionTitle(
+                title: 'New',
+                onTapSeeAll: () {},
+              ),
+              GetBuilder<NewProductController>(builder: (newProductController) {
+                return Visibility(
+                  visible: newProductController.inProgress == false,
+                  replacement: const CenterCircularProgressIndicator(),
+                  child: productList(
+                      newProductController.productListModel.productList ?? []),
+                );
+              }),
             ],
           ),
         ),
@@ -82,54 +121,54 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  SizedBox get categoryList {
+    return SizedBox(
+      height: 130,
+      child: GetBuilder<CategoryController>(builder: (categoryController) {
+        return Visibility(
+          visible: categoryController.inProgress == false,
+          replacement: const CenterCircularProgressIndicator(),
+          child: ListView.separated(
+            itemCount:
+                categoryController.categoryListModel.categoryList?.length ?? 0,
+            primary: false,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return CategoryItem(
+                  category: categoryController
+                      .categoryListModel.categoryList![index]);
+            },
+            separatorBuilder: (_, __) {
+              return const SizedBox(
+                width: 8,
+              );
+            },
+          ),
+        );
+      }),
+    );
+  }
+
   SizedBox productList(List<ProductModel> productList) {
     return SizedBox(
-      height: 180.h,
+      height: 190,
       child: ListView.separated(
         itemCount: productList.length,
+        primary: false,
+        shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemBuilder: ((context, index) {
+        itemBuilder: (context, index) {
           return ProductCardItem(
             product: productList[index],
           );
-        }),
+        },
         separatorBuilder: (_, __) {
           return const SizedBox(
             width: 8,
           );
         },
       ),
-    );
-  }
-
-  Widget get categoryList {
-    return SizedBox(
-      height: 100.h,
-      child: GetBuilder<CategoryController>(builder: (categoryController) {
-        return Visibility(
-            visible: categoryController.inProgress == false,
-            replacement: const CenterCircularProgressIndicator(),
-            child: ListView.separated(
-              itemCount:
-                  categoryController.categoryListModel.categoryList?.length ??
-                      0,
-              // primary: false,
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return CategoryItem(
-                  category:
-                      categoryController.categoryListModel.categoryList![index],
-                );
-              },
-              separatorBuilder: (_, __) {
-                return const SizedBox(
-                  width: 8,
-                );
-              },
-            ));
-      }),
     );
   }
 
@@ -145,15 +184,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         border: OutlineInputBorder(
             borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(8.r)),
+            borderRadius: BorderRadius.circular(8)),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(8.r),
-        ),
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(8)),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.circular(8.r),
-        ),
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(8)),
       ),
     );
   }
@@ -163,18 +200,21 @@ class _HomeScreenState extends State<HomeScreen> {
       title: Image.asset(AssetsPath.logoNav),
       actions: [
         CircleIconButton(
-          onTap: () {},
+          onTap: () async {
+            await AuthController.clearAuthData();
+            Get.offAll(() => const VerifyEmailScreen());
+          },
           iconData: Icons.person,
         ),
-        SizedBox(
-          width: 8.w,
+        const SizedBox(
+          width: 8,
         ),
         CircleIconButton(
           onTap: () {},
           iconData: Icons.call,
         ),
-        SizedBox(
-          width: 8.w,
+        const SizedBox(
+          width: 8,
         ),
         CircleIconButton(
           onTap: () {},

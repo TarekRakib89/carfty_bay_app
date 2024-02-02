@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class ColorSelector extends StatefulWidget {
-  const ColorSelector(
-      {super.key, required this.colors, required this.onChange});
+  const ColorSelector({
+    super.key,
+    required this.colors,
+    required this.onChange,
+  });
 
   final List<Color> colors;
   final Function(Color) onChange;

@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:carft_bay/data/models/profile.dart';
-
+import 'package:carft_bay/presentation/ui/screen/auth/verify_email_screen.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
-  String? token;
+  static String? token;
   Profile? profile;
 
   Future<void> saveUserDetails(String t, Profile p) async {
@@ -27,6 +27,8 @@ class AuthController extends GetxController {
     return token != null;
   }
 
+  bool get isTokenNotNull => token != null;
+
   Future<String?> _getToken() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString('token');
@@ -42,8 +44,13 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> clearAuthData() async {
+  static Future<void> clearAuthData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.clear();
+    token = null;
+  }
+
+  static Future<void> goToLogin() async {
+    Get.to(() => const VerifyEmailScreen());
   }
 }

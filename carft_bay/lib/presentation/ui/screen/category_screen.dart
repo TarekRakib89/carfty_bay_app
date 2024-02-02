@@ -1,6 +1,7 @@
 import 'package:carft_bay/presentation/state_holders/category_controller.dart';
 import 'package:carft_bay/presentation/state_holders/main_bottom_controller.dart';
 import 'package:carft_bay/presentation/ui/widget/category_item.dart';
+import 'package:carft_bay/presentation/ui/widget/center_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -38,27 +39,33 @@ class _CategoryScreenState extends State<CategoryScreen> {
           onRefresh: () async {
             Get.find<CategoryController>().getCategoryList();
           },
-          child: GetBuilder<CategoryController>(builder: (categorycontroller) {
-            return GridView.builder(
-              itemCount:
-                  categorycontroller.categoryListModel.categoryList?.length ??
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child:
+                GetBuilder<CategoryController>(builder: (categoryController) {
+              return Visibility(
+                visible: categoryController.inProgress == false,
+                replacement: const CenterCircularProgressIndicator(),
+                child: GridView.builder(
+                  itemCount: categoryController
+                          .categoryListModel.categoryList?.length ??
                       0,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                childAspectRatio: 0.95,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 8,
-              ),
-              itemBuilder: (context, index) {
-                return FittedBox(
-                  child: CategoryItem(
-                    category: categorycontroller
-                        .categoryListModel.categoryList![index],
-                  ),
-                );
-              },
-            );
-          }),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      childAspectRatio: 0.95,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 8),
+                  itemBuilder: (context, index) {
+                    return FittedBox(
+                        child: CategoryItem(
+                      category: categoryController
+                          .categoryListModel.categoryList![index],
+                    ));
+                  },
+                ),
+              );
+            }),
+          ),
         ),
       ),
     );
