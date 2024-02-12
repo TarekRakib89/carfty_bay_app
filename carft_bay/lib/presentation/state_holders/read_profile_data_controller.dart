@@ -1,6 +1,7 @@
 import 'package:carft_bay/data/models/profile.dart';
 import 'package:carft_bay/data/services/network_caller.dart';
 import 'package:carft_bay/data/utility/urls.dart';
+import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
@@ -22,6 +23,7 @@ class ReadProfileDataController extends GetxController {
   bool get isProfileCompleted => _isProfileCompleted;
 
   Future<bool> readProfileData(String token) async {
+    debugPrint("token ki $token");
     _inProgress = true;
     update();
     final response =
@@ -29,10 +31,10 @@ class ReadProfileDataController extends GetxController {
     _inProgress = false;
     if (response.isSuccess) {
       final profileData = response.responseData['data'];
-      if (profileData.isEmpty) {
+      if (profileData == null) {
         _isProfileCompleted = false;
       } else {
-        _profile = Profile.fromJson(profileData[0]);
+        _profile = Profile.fromJson(profileData);
         _isProfileCompleted = true;
       }
       update();

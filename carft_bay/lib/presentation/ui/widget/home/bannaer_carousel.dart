@@ -35,12 +35,14 @@ class _BannerCarouselState extends State<BannerCarousel> {
                     color: AppColors.primaryColor,
                     borderRadius: BorderRadius.circular(8.r),
                     image: DecorationImage(
+                        fit: BoxFit.cover,
                         image: NetworkImage(banner.image ?? ''))),
                 alignment: Alignment.center,
               );
             });
           }).toList(),
           options: CarouselOptions(
+            autoPlay: true,
             height: widget.height ?? 180.0,
             onPageChanged: (index, reason) {
               _currentIndex.value = index;

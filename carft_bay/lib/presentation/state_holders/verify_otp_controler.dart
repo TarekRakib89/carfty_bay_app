@@ -2,6 +2,7 @@ import 'package:carft_bay/data/services/network_caller.dart';
 import 'package:carft_bay/data/utility/urls.dart';
 import 'package:carft_bay/presentation/state_holders/auth_controller.dart';
 import 'package:carft_bay/presentation/state_holders/read_profile_data_controller.dart';
+import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
@@ -28,11 +29,15 @@ class VerifyOTPController extends GetxController {
     final response =
         await NetWorkCaller().getRequest(Urls.verifyOtp(email, otp));
     _inProgress = false;
+    debugPrint('what is ${response.isSuccess}');
     if (response.isSuccess) {
       _token = response.responseData['data'];
+
       await Future.delayed(const Duration(seconds: 3));
       final result =
           await Get.find<ReadProfileDataController>().readProfileData(token);
+
+      debugPrint('result is $result');
       if (result) {
         _shouldNavigateCompleteProfile =
             Get.find<ReadProfileDataController>().isProfileCompleted == false;

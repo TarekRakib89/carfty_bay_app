@@ -9,7 +9,8 @@ import 'package:http/http.dart';
 class NetWorkCaller {
   Future<ResponseData> getRequest(String url, {String? token}) async {
     log(url);
-    log(token.toString());
+    log('token is  1st $token}');
+    log('token is ${AuthController.token.toString()}');
     final Response response = await get(
       Uri.parse(url),
       headers: {
@@ -20,6 +21,7 @@ class NetWorkCaller {
     log(response.headers.toString());
     log(response.statusCode.toString());
     log(response.body.toString());
+
     if (response.statusCode == 200) {
       final decodedResponse = jsonDecode(response.body);
       if (decodedResponse['msg'] == 'success') {
