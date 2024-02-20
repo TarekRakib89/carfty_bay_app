@@ -19,7 +19,15 @@ class Urls {
 
   static String productDetails(int productId) =>
       '$_baseUrl/ProductDetailsById/$productId';
+
+  static String removeProduct(int productId) =>
+      '$_baseUrl/RemoveWishList/$productId';
+
   static String addToCart = '$_baseUrl/CreateCartList';
   static String cartList = '$_baseUrl/CartList';
   static String createInVoice = '$_baseUrl/InvoiceCreate';
+
+  static String createWishList(int productId) =>
+      '$_baseUrl/CreateWishList/$productId';
+  static String wishList = '$_baseUrl/ProductWishList';
 }

@@ -1,5 +1,6 @@
 import 'package:carft_bay/data/models/product_details_data.dart';
 import 'package:carft_bay/presentation/state_holders/add_to_cart_controller.dart';
+import 'package:carft_bay/presentation/state_holders/add_to_wishlist_controller.dart';
 import 'package:carft_bay/presentation/state_holders/auth_controller.dart';
 import 'package:carft_bay/presentation/state_holders/product_details_controller.dart';
 import 'package:carft_bay/presentation/ui/screen/auth/verify_email_screen.dart';
@@ -213,15 +214,34 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         const SizedBox(
           width: 8,
         ),
-        Card(
-          color: AppColors.primaryColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-          child: const Padding(
-            padding: EdgeInsets.all(4.0),
-            child: Icon(
-              Icons.favorite_outline_rounded,
-              size: 18,
-              color: Colors.white,
+        GestureDetector(
+          onTap: () async {
+            final response = await Get.find<AddToWishListController>()
+                .addToWishList(widget.productId);
+            if (response) {
+              Get.showSnackbar(const GetSnackBar(
+                title: 'Success',
+                message: 'This product has been added to cart',
+                duration: Duration(seconds: 2),
+              ));
+            } else {
+              Get.showSnackbar(const GetSnackBar(
+                title: 'Add to cart failed',
+                duration: Duration(seconds: 2),
+              ));
+            }
+          },
+          child: Card(
+            color: AppColors.primaryColor,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            child: const Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Icon(
+                Icons.favorite_outline_rounded,
+                size: 18,
+                color: Colors.white,
+              ),
             ),
           ),
         )

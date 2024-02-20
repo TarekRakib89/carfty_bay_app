@@ -1,4 +1,5 @@
 import 'package:carft_bay/presentation/state_holders/add_to_cart_controller.dart';
+import 'package:carft_bay/presentation/state_holders/add_to_wishlist_controller.dart';
 import 'package:carft_bay/presentation/state_holders/auth_controller.dart';
 import 'package:carft_bay/presentation/state_holders/cart_list_controller.dart';
 import 'package:carft_bay/presentation/state_holders/category_controller.dart';
@@ -14,7 +15,9 @@ import 'package:carft_bay/presentation/state_holders/read_profile_data_controlle
 import 'package:carft_bay/presentation/state_holders/send_email_otp_controller.dart';
 import 'package:carft_bay/presentation/state_holders/spacial_product_controller.dart';
 import 'package:carft_bay/presentation/state_holders/verify_otp_controler.dart';
+import 'package:carft_bay/presentation/state_holders/wish_list_controller.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 
 class ControllerBinder extends Bindings {
   @override
@@ -35,5 +38,7 @@ class ControllerBinder extends Bindings {
     Get.put(AddToCartController());
     Get.put(CartListController());
     Get.put(CreateInvoiceController());
+    Get.put(AddToWishListController());
+    Get.put(WistListController());
   }
 }
