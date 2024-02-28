@@ -3,6 +3,7 @@ import 'package:carft_bay/data/models/profile.dart';
 import 'package:carft_bay/data/services/network_caller.dart';
 import 'package:carft_bay/data/utility/urls.dart';
 import 'package:carft_bay/presentation/state_holders/auth_controller.dart';
+import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
@@ -22,6 +23,7 @@ class CompleteProfileController extends GetxController {
   Future<bool> createProfileData(
       String token, CreateProfileParams params) async {
     _inProgress = true;
+    debugPrint("token is $token");
     update();
     final response = await NetWorkCaller()
         .postRequest(Urls.createProfile, token: token, body: params.toJson());

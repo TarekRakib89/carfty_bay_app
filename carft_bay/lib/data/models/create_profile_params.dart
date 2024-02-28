@@ -47,6 +47,6 @@ class CreateProfileParams {
         'ship_state': shipState,
         'ship_postcode': shipPostcode,
         'ship_country': shipCountry,
-        "ship_phone": shipPhone,
+        'ship_phone': shipPhone
       };
 }

@@ -40,6 +40,11 @@ class CartListController extends GetxController {
     return isSuccess;
   }
 
+  void deleteCartListByProduct(int id) async {
+    final response =
+        await NetWorkCaller().getRequest(Urls.deleteCartListById(id));
+  }
+
   void updateQuantity(int id, int quantity) {
     _cartListModel.cartItemList
         ?.firstWhere((element) => element.id == id)

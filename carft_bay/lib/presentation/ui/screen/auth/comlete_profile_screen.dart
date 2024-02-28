@@ -278,15 +278,17 @@ class _CompletedProfileScreenState extends State<CompletedProfileScreen> {
                     return null;
                   },
                 ),
+                SizedBox(
+                  height: 16.h,
+                ),
                 TextFormField(
                   controller: _shippingNumberContorller,
                   maxLines: 4,
-                  decoration:
-                      const InputDecoration(hintText: 'Shipping phone number'),
+                  decoration: const InputDecoration(hintText: 'Shipping Phone'),
                   textInputAction: TextInputAction.done,
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
-                      return 'Enter your shpping number';
+                      return 'Enter your shpping phone number';
                     }
                     return null;
                   },
@@ -306,23 +308,26 @@ class _CompletedProfileScreenState extends State<CompletedProfileScreen> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             final createProfileParams = CreateProfileParams(
-                              cusName: _nameTEController.text.trim(),
-                              cusAdd: _addressTEController.text.trim(),
-                              cusCity: _cityTECController.text.trim(),
-                              cusState: _stateTEContorller.text.trim(),
-                              cusCountry: _countryTEController.text.trim(),
-                              cusPhone: _phoneNTEController.text.trim(),
-                              cusFax: _faxTECController.text.trim(),
-                              shipName: _shippingNTEContorller.text.trim(),
-                              shipAdd: _shippingAddressTEController.text.trim(),
-                              shipCity: _shippingCityTEController.text.trim(),
-                              shipState: _shippingStateTEController.text.trim(),
-                              shipPostcode:
-                                  _shippingPostCodeTECController.text.trim(),
-                              shipCountry:
-                                  _shippingCountryTEContorller.text.trim(),
-                              shipPhone: _shippingNumberContorller.text.trim(),
-                            );
+                                cusName: _nameTEController.text.trim(),
+                                cusAdd: _addressTEController.text.trim(),
+                                cusCity: _cityTECController.text.trim(),
+                                cusState: _stateTEContorller.text.trim(),
+                                cusPostcode: _postcodeTEController.text.trim(),
+                                cusCountry: _countryTEController.text.trim(),
+                                cusPhone: _phoneNTEController.text.trim(),
+                                cusFax: _faxTECController.text.trim(),
+                                shipName: _shippingNTEContorller.text.trim(),
+                                shipAdd:
+                                    _shippingAddressTEController.text.trim(),
+                                shipCity: _shippingCityTEController.text.trim(),
+                                shipState:
+                                    _shippingStateTEController.text.trim(),
+                                shipPostcode:
+                                    _shippingPostCodeTECController.text.trim(),
+                                shipCountry:
+                                    _shippingCountryTEContorller.text.trim(),
+                                shipPhone:
+                                    _shippingNumberContorller.text.trim());
                             final bool result = await completeProfileController
                                 .createProfileData(
                               Get.find<VerifyOTPController>().token,
