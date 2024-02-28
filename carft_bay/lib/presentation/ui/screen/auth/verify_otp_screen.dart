@@ -1,3 +1,4 @@
+import 'package:carft_bay/presentation/state_holders/send_email_otp_controller.dart';
 import 'package:carft_bay/presentation/state_holders/verify_otp_controler.dart';
 import 'package:carft_bay/presentation/ui/screen/auth/comlete_profile_screen.dart';
 import 'package:carft_bay/presentation/ui/screen/main_bottom_nav_screen.dart';
@@ -20,6 +21,14 @@ class VerifyOTPScreen extends StatefulWidget {
 class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
   final TextEditingController _otpTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  VerifyOTPController verifyOTPController = Get.find<VerifyOTPController>();
+  SendEmailOtpController emailController = Get.find<SendEmailOtpController>();
+
+  @override
+  void initState() {
+    super.initState();
+    verifyOTPController.startCountdown();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +100,8 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                       replacement: const CenterCircularProgressIndicator(),
                       child: ElevatedButton(
                         onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() &&
+                              verifyOTPController.remainingSeconds.value > 0) {
                             final bool response = await verifyOtpController
                                 .verifyOTP(widget.email, _otpTEController.text);
                             if (response) {
@@ -110,6 +120,14 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                               ));
                             }
                           }
+                          if (verifyOTPController.remainingSeconds.value == 0) {
+                            Get.showSnackbar(const GetSnackBar(
+                              title: 'code expaired',
+                              message: "code is expaired",
+                              duration: Duration(seconds: 2),
+                              isDismissible: true,
+                            ));
+                          }
                         },
                         child: const Text('Next'),
                       ),
@@ -119,29 +137,45 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> {
                 const SizedBox(
                   height: 24,
                 ),
-                RichText(
-                  text: const TextSpan(
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                    children: [
-                      TextSpan(text: 'This code will expire '),
-                      // TODO - make this timer workable
-                      TextSpan(
-                        text: '120s',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.w600,
-                        ),
+                Obx(
+                  () => RichText(
+                    text: TextSpan(
+                      style: const TextStyle(
+                        color: Colors.grey,
                       ),
-                    ],
+                      children: [
+                        const TextSpan(text: 'This code will expire '),
+                        TextSpan(
+                          text: verifyOTPController.remainingSeconds.value
+                              .toString(),
+                          style: const TextStyle(
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final bool result =
+                        await emailController.sendOtpToEmail(widget.email);
+                    if (!result) {
+                      Get.showSnackbar(GetSnackBar(
+                        title: 'Send OTP failed',
+                        message: emailController.errorMessage,
+                        duration: const Duration(seconds: 2),
+                        isDismissible: true,
+                      ));
+                    }
+                    {
+                      verifyOTPController.startCountdown();
+                    }
+                  },
                   child: const Text(
                     'Resend Code',
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: Colors.blue),
                   ),
                 ),
               ],

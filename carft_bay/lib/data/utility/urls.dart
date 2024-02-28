@@ -32,4 +32,5 @@ class Urls {
   static String wishList = '$_baseUrl/ProductWishList';
 
   static String deleteCartListById(int id) => '$_baseUrl/DeleteCartList/$id';
+  static String createProductReview = '$_baseUrl/CreateProductReview';
 }

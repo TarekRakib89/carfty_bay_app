@@ -10,6 +10,7 @@ class ProductController extends GetxController {
   String get errorMessage => _errorMessage;
   ProductListModel _productListModel = ProductListModel();
   ProductListModel get productListModel => _productListModel;
+
   Future<bool> getProductList({required int categoryId}) async {
     bool isSucces = false;
     _inProgress = true;

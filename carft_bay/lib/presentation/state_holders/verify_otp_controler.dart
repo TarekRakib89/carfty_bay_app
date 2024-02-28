@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carft_bay/data/services/network_caller.dart';
 import 'package:carft_bay/data/utility/urls.dart';
 import 'package:carft_bay/presentation/state_holders/auth_controller.dart';
@@ -8,20 +10,17 @@ import 'package:get/get.dart';
 
 class VerifyOTPController extends GetxController {
   bool _inProgress = false;
-
   bool get inProgress => _inProgress;
-
   String _errorMessage = '';
-
   String get errorMessage => _errorMessage;
-
   bool _shouldNavigateCompleteProfile = true;
-
   bool get shouldNavigateCompleteProfile => _shouldNavigateCompleteProfile;
-
   String _token = '';
-
   String get token => _token;
+
+  Timer? _timer;
+  final RxInt _remainingSeconds = 120.obs;
+  RxInt get remainingSeconds => _remainingSeconds;
 
   Future<bool> verifyOTP(String email, String otp) async {
     _inProgress = true;
@@ -57,5 +56,24 @@ class VerifyOTPController extends GetxController {
       update();
       return false;
     }
+  }
+
+  void startCountdown() {
+    _remainingSeconds.value = 120;
+    const oneSecond = Duration(seconds: 1);
+    _timer = Timer.periodic(oneSecond, (Timer timer) {
+      if (_remainingSeconds.value == 0) {
+        timer.cancel();
+        update();
+      } else {
+        _remainingSeconds.value--;
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 }
