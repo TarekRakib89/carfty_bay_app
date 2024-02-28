@@ -2,6 +2,7 @@ import 'package:carft_bay/data/models/cart_item.dart';
 import 'package:carft_bay/data/models/cart_list_model.dart';
 import 'package:carft_bay/data/services/network_caller.dart';
 import 'package:carft_bay/data/utility/urls.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CartListController extends GetxController {
@@ -41,8 +42,15 @@ class CartListController extends GetxController {
   }
 
   void deleteCartListByProduct(int id) async {
-    final response =
-        await NetWorkCaller().getRequest(Urls.deleteCartListById(id));
+    try {
+      final response =
+          await NetWorkCaller().getRequest(Urls.deleteCartListById(id));
+      if (response.isSuccess) {
+        getCartList();
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void updateQuantity(int id, int quantity) {

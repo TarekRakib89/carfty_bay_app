@@ -2,7 +2,6 @@ import 'package:carft_bay/data/models/wish_list_model.dart';
 import 'package:carft_bay/presentation/state_holders/main_bottom_controller.dart';
 import 'package:carft_bay/presentation/state_holders/wish_list_controller.dart';
 import 'package:carft_bay/presentation/ui/widget/center_circular_progress_indicator.dart';
-import 'package:carft_bay/presentation/ui/widget/product_card_item.dart';
 import 'package:carft_bay/presentation/ui/widget/product_wish_list_cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:carft_bay/data/models/wish_list_model.dart';
-import 'package:carft_bay/presentation/state_holders/wish_list_controller.dart';
 import 'package:carft_bay/presentation/ui/screen/product_details_screen.dart';
 import 'package:carft_bay/presentation/ui/utilty/app_colors.dart';
 

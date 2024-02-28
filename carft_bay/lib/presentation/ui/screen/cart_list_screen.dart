@@ -1,3 +1,4 @@
+import 'package:carft_bay/data/models/cart_item.dart';
 import 'package:carft_bay/presentation/state_holders/cart_list_controller.dart';
 import 'package:carft_bay/presentation/state_holders/main_bottom_controller.dart';
 import 'package:carft_bay/presentation/ui/screen/checkout_screen.dart';
@@ -16,12 +17,18 @@ class CartListScreen extends StatefulWidget {
 }
 
 class _CartListScreenState extends State<CartListScreen> {
+  CartListController cartListController = Get.find<CartListController>();
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Get.find<CartListController>().getCartList();
     });
+  }
+
+  void deleteCartListByProduct(int id) {
+    debugPrint('id is $id');
+    cartListController.deleteCartListByProduct(id);
   }
 
   @override
@@ -53,10 +60,14 @@ class _CartListScreenState extends State<CartListScreen> {
                       cartListController.cartListModel.cartItemList?.length ??
                           0,
                   itemBuilder: (context, index) {
+                    CartItem cartItem =
+                        cartListController.cartListModel.cartItemList![index];
                     return CartProductItem(
-                      cartItem:
-                          cartListController.cartListModel.cartItemList![index],
-                    );
+                        cartItem: cartListController
+                            .cartListModel.cartItemList![index],
+                        onTap: () {
+                          deleteCartListByProduct(cartItem.productId!);
+                        });
                   },
                   separatorBuilder: (_, __) => const SizedBox(
                     height: 8,
