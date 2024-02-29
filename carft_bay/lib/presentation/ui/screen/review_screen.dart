@@ -1,6 +1,5 @@
 import 'package:carft_bay/data/models/product_review.dart';
 import 'package:carft_bay/presentation/state_holders/review_controller.dart';
-import 'package:carft_bay/presentation/ui/screen/create_review_screen.dart';
 import 'package:carft_bay/presentation/ui/utilty/app_colors.dart';
 import 'package:carft_bay/presentation/ui/widget/custom_app_bar.dart';
 import 'package:flutter/material.dart';
