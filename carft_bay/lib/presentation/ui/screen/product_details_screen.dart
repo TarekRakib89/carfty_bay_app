@@ -4,12 +4,15 @@ import 'package:carft_bay/presentation/state_holders/add_to_wishlist_controller.
 import 'package:carft_bay/presentation/state_holders/auth_controller.dart';
 import 'package:carft_bay/presentation/state_holders/product_details_controller.dart';
 import 'package:carft_bay/presentation/ui/screen/auth/verify_email_screen.dart';
+import 'package:carft_bay/presentation/ui/screen/create_review_screen.dart';
+import 'package:carft_bay/presentation/ui/screen/review_screen.dart';
 import 'package:carft_bay/presentation/ui/utilty/app_colors.dart';
 import 'package:carft_bay/presentation/ui/widget/center_circular_progress_indicator.dart';
 import 'package:carft_bay/presentation/ui/widget/product_details/color_selector.dart';
 import 'package:carft_bay/presentation/ui/widget/product_details/product_image_carousel.dart';
 import 'package:carft_bay/presentation/ui/widget/product_details/size_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:item_count_number_button/item_count_number_button.dart';
 
@@ -23,6 +26,7 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  double _rating = 3.0;
   ValueNotifier<int> noOfItems = ValueNotifier(1);
   List<Color> colors = [
     Colors.purple,
@@ -49,6 +53,50 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     super.initState();
     // print(AuthController.token);
     Get.find<ProductDetailsController>().getProductDetails(widget.productId);
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Product Rating'),
+          actions: <Widget>[
+            RatingBar.builder(
+              initialRating: 3,
+              minRating: 1,
+              direction: Axis.horizontal,
+              itemCount: 5,
+              itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+              itemBuilder: (context, _) => const Icon(
+                Icons.star,
+                color: Colors.green,
+              ),
+              onRatingUpdate: (rating) {
+                _rating = rating;
+                setState(() {});
+              },
+            ),
+            TextButton(
+              child: const Text('ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Get.to(CreateReviewScreen(
+                  rating: _rating,
+                  productsId: widget.productId,
+                ));
+              },
+            ),
+            TextButton(
+              child: const Text('Cencel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -184,10 +232,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            const Icon(
-              Icons.star,
-              size: 18,
-              color: Colors.amber,
+            GestureDetector(
+              onTap: () {
+                _showAlertDialog(context);
+              },
+              child: const Icon(
+                Icons.star,
+                size: 18,
+                color: Colors.amber,
+              ),
             ),
             const SizedBox(
               width: 4,
@@ -204,12 +257,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         const SizedBox(
           width: 8,
         ),
-        const Text(
-          'Reviews',
-          style: TextStyle(
-              fontSize: 16,
-              color: AppColors.primaryColor,
-              fontWeight: FontWeight.w500),
+        GestureDetector(
+          onTap: () {
+            Get.to(ReviewsScreen(
+              productsId: widget.productId,
+            ));
+          },
+          child: const Text(
+            'Reviews',
+            style: TextStyle(
+                fontSize: 16,
+                color: AppColors.primaryColor,
+                fontWeight: FontWeight.w500),
+          ),
         ),
         const SizedBox(
           width: 8,

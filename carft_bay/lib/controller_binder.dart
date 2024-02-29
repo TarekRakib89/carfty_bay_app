@@ -5,6 +5,7 @@ import 'package:carft_bay/presentation/state_holders/cart_list_controller.dart';
 import 'package:carft_bay/presentation/state_holders/category_controller.dart';
 import 'package:carft_bay/presentation/state_holders/complete_profile_controller.dart';
 import 'package:carft_bay/presentation/state_holders/create_invoice_controller.dart';
+import 'package:carft_bay/presentation/state_holders/create_review_controller.dart';
 import 'package:carft_bay/presentation/state_holders/home_banner_controller.dart';
 import 'package:carft_bay/presentation/state_holders/main_bottom_controller.dart';
 import 'package:carft_bay/presentation/state_holders/new_product_controller.dart';
@@ -12,6 +13,7 @@ import 'package:carft_bay/presentation/state_holders/popular_product_controller.
 import 'package:carft_bay/presentation/state_holders/product_controller.dart';
 import 'package:carft_bay/presentation/state_holders/product_details_controller.dart';
 import 'package:carft_bay/presentation/state_holders/read_profile_data_controller.dart';
+import 'package:carft_bay/presentation/state_holders/review_controller.dart';
 import 'package:carft_bay/presentation/state_holders/send_email_otp_controller.dart';
 import 'package:carft_bay/presentation/state_holders/spacial_product_controller.dart';
 import 'package:carft_bay/presentation/state_holders/verify_otp_controler.dart';
@@ -40,5 +42,7 @@ class ControllerBinder extends Bindings {
     Get.put(CreateInvoiceController());
     Get.put(AddToWishListController());
     Get.put(WistListController());
+    Get.put(CreateReviewController());
+    Get.put(ReviewListController());
   }
 }
